@@ -60,7 +60,12 @@
     </div>
     <center>
         <button class="comprar boton" style="margin: 5px 50px;">Iniciar Compra</button>
-        <button class="buscarVenta boton" style="margin: 5px 50px ;">Buscar Venta</button>
+
+         <!-- Button trigger modal -->
+         <button type="button" class="buscarVenta boton" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Buscar Venta
+        </button>
+
         <div id="espacio" class="container"></div>
         <div id="pie" style="display: none;">
             <div id="subtotal"></div>
@@ -69,8 +74,29 @@
                     style="margin: 5px 50px;" class="boton">Cancelar</button>
             </div>
         </div>
+       
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Buscador</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="deleteNum()"></button>
+                    </div>
+                    <div id="divBuscador" class="modal-body">
+                        Ingrese número de venta <input id="inputBuscador" type="number" name="numVentaBuscada">
+                    </div>
+                    <div id="ticketEncontrado"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="deleteNum()">Cancelar</button>
+                        <button id="botonBuscador" type="button" class="btn btn-primary">Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </center>
     <script src="./app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 </html>

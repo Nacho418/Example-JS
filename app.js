@@ -46,21 +46,23 @@ let subtotal = document.querySelector("#subtotal")
 let newH5 = document.createElement("h5")
 subtotal.appendChild(newH5)
 newH5.textContent = ""
+let formRadio = document.createElement("p")
+subtotal.appendChild(formRadio)
+
+let divMa = document.querySelector("#ticketEncontrado")
+let h5Ticket = document.createElement("h5")
+divMa.appendChild(h5Ticket)
 
 let boton3 = document.querySelector("#confirmar")
 let boton4 = document.querySelector("#cancelar")
 boton3.addEventListener("click", confirmar)
 boton4.addEventListener("click", cancelar)
 
-let radioInputs = document.querySelectorAll(".radioInput")
-for (let i = 0; i < radioInputs.length; i++) {
-    radioInputs[i].addEventListener("click",modValue) 
-}
-
 //FUNCION BOTON PRIMARIO "INICIAR COMPRA"
 //FUNCION VALIDAR CANTIDADES INGRESADAS
 function checkcant() {
     let inputs = []
+    cantProd = 0
     inputs = document.querySelectorAll(".inputKg")
     let errores = 0
     checkCantProd()
@@ -71,6 +73,7 @@ function checkcant() {
     }
     if (errores == 0 && cantProd > 0) {
         comprar()
+        window.scrollTo(0, 10000)
     }
     else {
         alert("Error en las cantidades \nVuelva a intentar")
@@ -78,17 +81,17 @@ function checkcant() {
 }
 
 function comprar() {
+    cuotas = 1
     cant1 = document.querySelector("#cantKgHF")
     cant2 = document.querySelector("#cantKgHG")
     cant3 = document.querySelector("#cantKgHGal")
     cant4 = document.querySelector("#cantKgAI")
     cant5 = document.querySelector("#cantKgAl")
     cant6 = document.querySelector("#cantKgHA")
-    numVenta++
     pagoTot = (cant1.value * precio1) + (cant2.value * precio2) + (cant3.value * precio3) + (cant4.value * precio4) + (cant5.value * precio5) + (cant6.value * precio6)
     pesoTot = parseInt(cant1.value) + parseInt(cant2.value) + parseInt(cant3.value) + parseInt(cant4.value) + parseInt(cant5.value) + parseInt(cant6.value)
 
-    editH5(cantProd,pesoTot,pagoTot)
+    editH5(cantProd, pesoTot, pagoTot)
 
     document.querySelector("#pie").style.display = "block"
     cant1.setAttribute("disabled", "")
@@ -97,38 +100,40 @@ function comprar() {
     cant4.setAttribute("disabled", "")
     cant5.setAttribute("disabled", "")
     cant6.setAttribute("disabled", "")
-    boton2.setAttribute("disabled","")
+    boton2.setAttribute("disabled", "")
     boton2.setAttribute("style", "opacity:0.7")
+
+    formRadio.innerHTML =
+        `
+<form>
+<span class="radioSpan">1 <input id="1" type="radio" name="cuotas" class="radioInput" value="1" onchange="getValue(this)" checked></span>
+<span class="radioSpan">3 <input id="3" type="radio" name="cuotas" class="radioInput" value="3" onchange="getValue(this)"></span>
+<span class="radioSpan">6 <input id="6" type="radio" name="cuotas" class="radioInput" value="6" onchange="getValue(this)"></span>
+<span class="radioSpan">9 <input id="9" type="radio" name="cuotas" class="radioInput" value="9" onchange="getValue(this)"></span>
+<span class="radioSpan">12 <input id="12" type="radio" name="cuotas" class="radioInput" value="12" onchange="getValue(this)"></span>
+<span class="radioSpan">18 <input id="18" type="radio" name="cuotas" class="radioInput" value="18" onchange="getValue(this)"></span>
+</form>
+`
 }
 
-function editH5(cant,peso,pago){
+function editH5(cant, peso, pago) {
     newH5.innerHTML = `
     Cantidad de items: ${cant}<br><br>
     Peso Total: ${peso} kg<br><br>
     Total a abonar: <strong style="color: red">$${pago}</strong><br><br>
     Cantidad de pagos (5% mensual acumulativo)
-    <p>
-    <form>
-    <span class="radioSpan">1 <input id="1" type="radio" name="cuotas" class="radioInput" value="1" onchange="getValue(this)"></span>
-    <span class="radioSpan">3 <input id="3" type="radio" name="cuotas" class="radioInput" value="3" onchange="getValue(this)"></span>
-    <span class="radioSpan">6 <input id="6" type="radio" name="cuotas" class="radioInput" value="6" onchange="getValue(this)"></span>
-    <span class="radioSpan">9 <input id="9" type="radio" name="cuotas" class="radioInput" value="9" onchange="getValue(this)"></span>
-    <span class="radioSpan">12 <input id="12" type="radio" name="cuotas" class="radioInput" value="12" onchange="getValue(this)"></span>
-    <span class="radioSpan">18 <input id="18" type="radio" name="cuotas" class="radioInput" value="18" onchange="getValue(this)"></span>
-    </form>
-    </p>
     `
 }
 
 //FUNCION GET RADIO VALUE
-function getValue(radio){
-    cuotas = radio.value
+function getValue(e) {
+    cuotas = parseInt(e.value)
     pagoTotal = pagoTot
     for (let i = 2; i <= cuotas; i++) {
         pagoTotal *= 1.05
     }
     pagoTotal = Math.floor(pagoTotal)
-    editH5(cantProd,pesoTot,pagoTotal)
+    editH5(cantProd, pesoTot, pagoTotal)
 }
 
 //FUNCION CANCELAR COMPRA
@@ -141,23 +146,24 @@ function cancelar() {
     cant4.removeAttribute("disabled", "")
     cant5.removeAttribute("disabled", "")
     cant6.removeAttribute("disabled", "")
-    boton2.removeAttribute("disabled","")
-    boton2.removeAttribute("style","opacity:0.7")
+    boton2.removeAttribute("disabled", "")
+    boton2.removeAttribute("style", "opacity:0.7")
 
 }
 
-function checkCantProd(){
+function checkCantProd() {
     let inputs = document.querySelectorAll(".inputKg")
     for (let i = 0; i < inputs.length; i++) {
-        if (inputs[i].value>0) {
+        if (inputs[i].value > 0) {
             cantProd++
-        } 
+        }
     }
 }
 
 //FUNCION CONFRIMAR COMPRA
 function confirmar() {
     let vendido = new Venta()
+    numVenta++
     vendido.numVenta = numVenta
     vendido.fecha = hoyStr
     vendido.pago = pagoTotal
@@ -165,6 +171,8 @@ function confirmar() {
     vendido.cantCuotas = cuotas
     vendido.cantProd = cantProd
     ventas.push(vendido)
+    let enJson = JSON.stringify(ventas)
+    localStorage.setItem("ventas", enJson)
     alert("Gracias por su compra")
     reiniciar()
 }
@@ -185,9 +193,45 @@ function reiniciar() {
     cant4.removeAttribute("disabled", "")
     cant5.removeAttribute("disabled", "")
     cant6.removeAttribute("disabled", "")
-    boton2.removeAttribute("disabled","")
+    boton2.removeAttribute("disabled", "")
     boton2.removeAttribute("style", "opacity:0.7")
     cantProd = 0
+}
+
+function deleteNum() {
+    let numero = document.querySelector("#inputBuscador")
+    numero.value = null
+    divMa.style.display = "none"
+}
+
+let botonBuscador = document.querySelector("#botonBuscador")
+botonBuscador.addEventListener("click", buscarVenta)
+
+function buscarVenta() {
+    let ventaBuscada = parseFloat(document.querySelector("#inputBuscador").value)
+    let ventasGuardadas = JSON.parse(localStorage.getItem("ventas"))
+    if (ventasGuardadas.some((venta) => venta.numVenta == ventaBuscada)) {
+        let buscado = ventasGuardadas.find(venta => venta.numVenta == ventaBuscada)
+        console.log(buscado)
+        mostrarVenta(buscado)
+    } else {
+        alert("Ticket no encontrado, intente nuevamente")
+        deleteNum()
+    }
+}
+
+function mostrarVenta(obj) {
+    h5Ticket.innerHTML =
+        `
+    <p>
+    Ticket N° ${obj.numVenta}<br>
+    Fecha ${obj.fecha}<br><br>
+    Peso total: ${obj.pesoTot}kg<br>
+    Monto total: $${obj.pago}<br><br>
+    Se cobró en ${obj.cantCuotas} pagos de $${parseInt(obj.pago / obj.cantCuotas)}
+    </p>
+    `
+    divMa.style.display = "block"
 }
 
 //CLASE PARA GENERADOR DE VENTAS
