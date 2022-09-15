@@ -245,4 +245,27 @@ class Venta {
         this.fecha = fecha;
     }
 }
+class Persona {
+    constructor(nombre, apellido, correo) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+    }
+}
 
+let clientes = [] //ver por qué no se pushea
+let botonLog = document.querySelector("#log")
+botonLog.addEventListener("click", login)
+
+function login() {
+    let formulario = document.querySelector("#form")
+    let nombre = formulario.name.value
+    let apellido = formulario.lastName.value
+    let correo = formulario.email.value
+    let person = new Persona()
+    person.nombre = nombre
+    person.apellido = apellido
+    person.correo = correo
+    personToJson = JSON.stringify(person)
+    sessionStorage.setItem("client", personToJson)
+}

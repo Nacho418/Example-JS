@@ -95,3 +95,9 @@ margin-bottom: 30px;
 .radioSpan{
     margin: 0 1.6%;
 }
+.campo{
+    margin: 10px 10px;
+}
+.ocultar{
+    display: none;
+}
