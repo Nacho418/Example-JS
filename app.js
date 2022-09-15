@@ -1,3 +1,5 @@
+checkStorage()
+
 //INSERTAR FECHA
 let day = new Date()
 let hoy = [day.getDate(), day.getMonth(), day.getFullYear()]
@@ -27,6 +29,7 @@ let pagoTotal = 0
 let pesoTot = 0
 let cantProd = 0
 let ventas = [] //ARREGLO CONTENEDOR DE TODAS LAS VENTAS
+let clientes = []
 
 //SELECTORES DE INPUTS CANTIDADES
 let cant1 = document.querySelector("#cantKgHF")
@@ -212,7 +215,6 @@ function buscarVenta() {
     let ventasGuardadas = JSON.parse(localStorage.getItem("ventas"))
     if (ventasGuardadas.some((venta) => venta.numVenta == ventaBuscada)) {
         let buscado = ventasGuardadas.find(venta => venta.numVenta == ventaBuscada)
-        console.log(buscado)
         mostrarVenta(buscado)
     } else {
         alert("Ticket no encontrado, intente nuevamente")
@@ -253,11 +255,8 @@ class Persona {
     }
 }
 
-let clientes = [] //ver por qué no se pushea
-let botonLog = document.querySelector("#log")
-botonLog.addEventListener("click", login)
-
-function login() {
+function login(event) {
+    event.preventDefault()
     let formulario = document.querySelector("#form")
     let nombre = formulario.name.value
     let apellido = formulario.lastName.value
@@ -266,6 +265,22 @@ function login() {
     person.nombre = nombre
     person.apellido = apellido
     person.correo = correo
+    clientes.push(person)
     personToJson = JSON.stringify(person)
     sessionStorage.setItem("client", personToJson)
+    location.reload()
+}
+
+function checkStorage(){
+    let cliente = JSON.parse(sessionStorage.getItem("client"))
+    if (cliente != null){
+        approved()
+    }
+}
+
+function approved(){
+    divLista = document.querySelector("#lista")
+    divLista.classList.remove("hide")
+    let formulario = document.querySelector("#form")
+    formulario.classList.add("hide")
 }
