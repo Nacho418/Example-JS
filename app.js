@@ -173,10 +173,12 @@ function confirmar() {
     vendido.pesoTot = pesoTot
     vendido.cantCuotas = cuotas
     vendido.cantProd = cantProd
+    let cliente = JSON.parse(sessionStorage.getItem("client"))
+    vendido.cliente = cliente
     ventas.push(vendido)
     let enJson = JSON.stringify(ventas)
     localStorage.setItem("ventas", enJson)
-    alert("Gracias por su compra")
+    alert("Gracias " + cliente.nombre + " por su compra")
     reiniciar()
 }
 
@@ -228,6 +230,8 @@ function mostrarVenta(obj) {
     <p>
     Ticket N° ${obj.numVenta}<br>
     Fecha ${obj.fecha}<br><br>
+    Cliente: <br>${obj.cliente.nombre} ${obj.cliente.apellido}<br>
+    ${obj.cliente.correo}<br><br>
     Peso total: ${obj.pesoTot}kg<br>
     Monto total: $${obj.pago}<br><br>
     Se cobró en ${obj.cantCuotas} pagos de $${parseInt(obj.pago / obj.cantCuotas)}
@@ -238,13 +242,14 @@ function mostrarVenta(obj) {
 
 //CLASE PARA GENERADOR DE VENTAS
 class Venta {
-    constructor(numVenta, cantProd, pago, cantCuotas, pesoTot, fecha) {
+    constructor(numVenta, cantProd, pago, cantCuotas, pesoTot, fecha, cliente) {
         this.numVenta = numVenta;
         this.cantProd = cantProd;
         this.pago = pago;
         this.cantCuotas = cantCuotas;
         this.pesoTot = pesoTot;
         this.fecha = fecha;
+        this.cliente = cliente;
     }
 }
 class Persona {
@@ -268,7 +273,7 @@ function login(event) {
     clientes.push(person)
     personToJson = JSON.stringify(person)
     sessionStorage.setItem("client", personToJson)
-    location.reload()
+    checkData(person)
 }
 
 function checkStorage(){
@@ -276,6 +281,15 @@ function checkStorage(){
     if (cliente != null){
         approved()
     }
+}
+
+function checkData(data){
+    if (data.nombre == "" || data.apellido == "" || data.correo == "") {
+        sessionStorage.removeItem ("client")
+        alert("Ingrese todos sus datos")
+        
+    }
+    location.reload()
 }
 
 function approved(){
