@@ -151,6 +151,14 @@ function cancelar() {
     cant6.removeAttribute("disabled", "")
     boton2.removeAttribute("disabled", "")
     boton2.removeAttribute("style", "opacity:0.7")
+    Toastify({
+        avatar: "https://img1.freepng.es/20180203/cae/kisspng-scalable-vector-graphics-computer-file-cancel-button-png-photos-5a756d294d0b97.9125681215176450973156.jpg",
+        text: "¡Cancelado!",
+        duration: 4000,
+        style: {
+            background: "linear-gradient(to right, rgb(255, 0, 0), rgb(255, 136, 0))",
+        }
+    }).showToast();
 
 }
 
@@ -165,21 +173,49 @@ function checkCantProd() {
 
 //FUNCION CONFRIMAR COMPRA
 function confirmar() {
-    let vendido = new Venta()
-    numVenta++
-    vendido.numVenta = numVenta
-    vendido.fecha = hoyStr
-    vendido.pago = pagoTotal
-    vendido.pesoTot = pesoTot
-    vendido.cantCuotas = cuotas
-    vendido.cantProd = cantProd
-    let cliente = JSON.parse(sessionStorage.getItem("client"))
-    vendido.cliente = cliente
-    ventas.push(vendido)
-    let enJson = JSON.stringify(ventas)
-    localStorage.setItem("ventas", enJson)
-    alert("Gracias " + cliente.nombre + " por su compra")
-    reiniciar()
+    Swal.fire({
+        title: '¿Confirmar compra?',
+        text: "No se podrá deshacer",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Confirmar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let vendido = new Venta()
+            numVenta++
+            vendido.numVenta = numVenta
+            vendido.fecha = hoyStr
+            vendido.pago = pagoTotal
+            vendido.pesoTot = pesoTot
+            vendido.cantCuotas = cuotas
+            vendido.cantProd = cantProd
+            let cliente = JSON.parse(sessionStorage.getItem("client"))
+            vendido.cliente = cliente
+            ventas.push(vendido)
+            let enJson = JSON.stringify(ventas)
+            localStorage.setItem("ventas", enJson)
+            Swal.fire(
+                '¡Realizado!',
+                `Gracias ${vendido.cliente.nombre} por su compra`,
+                'success'
+            )
+            Toastify({
+                avatar: "https://e7.pngegg.com/pngimages/707/466/png-clipart-check-mark-computer-icons-symbol-check-miscellaneous-angle.png",
+                text: "¡Venta realizada con éxito!",
+                duration: 4000,
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                }
+            }).showToast();
+            reiniciar()
+        }
+        else {
+            cancelar()
+            comprar()
+        }
+    })
 }
 
 //FUNCION RESTABLECER PREDETERMINADO
@@ -219,7 +255,11 @@ function buscarVenta() {
         let buscado = ventasGuardadas.find(venta => venta.numVenta == ventaBuscada)
         mostrarVenta(buscado)
     } else {
-        alert("Ticket no encontrado, intente nuevamente")
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'No se ha encontrado su N° de venta',
+        })
         deleteNum()
     }
 }
@@ -276,23 +316,23 @@ function login(event) {
     checkData(person)
 }
 
-function checkStorage(){
+function checkStorage() {
     let cliente = JSON.parse(sessionStorage.getItem("client"))
-    if (cliente != null){
+    if (cliente != null) {
         approved()
     }
 }
 
-function checkData(data){
+function checkData(data) {
     if (data.nombre == "" || data.apellido == "" || data.correo == "") {
-        sessionStorage.removeItem ("client")
+        sessionStorage.removeItem("client")
         alert("Ingrese todos sus datos")
-        
+
     }
     location.reload()
 }
 
-function approved(){
+function approved() {
     divLista = document.querySelector("#lista")
     divLista.classList.remove("hide")
     let formulario = document.querySelector("#form")

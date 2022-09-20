@@ -101,3 +101,6 @@ margin-bottom: 30px;
 .hide{
     display: none;
 }
+.hide:hover{
+    color: rgb(255, 136, 0);
+}
