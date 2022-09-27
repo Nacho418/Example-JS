@@ -6,14 +6,22 @@ let hoy = [day.getDate(), day.getMonth(), day.getFullYear()]
 let hoyStr = day.toLocaleDateString()
 document.querySelector(".fecha").textContent = hoyStr
 
-//LISTA DE PRECIOS
-let precio1 = 956
-let precio2 = 841
-let precio3 = 1248
-let precio4 = 5128
-let precio5 = 3592
-let precio6 = 928
+//GET LISTA DE PRECIOS DESDE JSON API
+let productData
+fetch('prods.json').then((resp) => resp.json()).then((data) => {
+    let dataEnJson = JSON.stringify(data)
+    localStorage.setItem("listaDePrecios", dataEnJson)})
 
+//OBTENGO JSON EN VARIABLE GLOBAL
+let listaProd = JSON.parse(localStorage.getItem("listaDePrecios"))
+
+//LISTA DE PRECIOS
+let precio1 = listaProd[0].precio
+let precio2 = listaProd[1].precio
+let precio3 = listaProd[2].precio
+let precio4 = listaProd[3].precio
+let precio5 = listaProd[4].precio
+let precio6 = listaProd[5].precio
 //ASIGNAMIENTO DE PRECIOS
 document.querySelector("#span1").textContent = precio1
 document.querySelector("#span2").textContent = precio2
@@ -21,6 +29,22 @@ document.querySelector("#span3").textContent = precio3
 document.querySelector("#span4").textContent = precio4
 document.querySelector("#span5").textContent = precio5
 document.querySelector("#span6").textContent = precio6
+
+//TEXTO PRODUCTOS
+document.querySelector("#producto1p").innerHTML = listaProd[0].producto
+document.querySelector("#producto2p").innerHTML = listaProd[1].producto
+document.querySelector("#producto3p").innerHTML = listaProd[2].producto
+document.querySelector("#producto4p").innerHTML = listaProd[3].producto
+document.querySelector("#producto5p").innerHTML = listaProd[4].producto
+document.querySelector("#producto6p").innerHTML = listaProd[5].producto
+
+//IMAGENES PRODUCTOS
+document.querySelector("#producto1i").src = listaProd[0].urlImagen
+document.querySelector("#producto2i").src = listaProd[1].urlImagen
+document.querySelector("#producto3i").src = listaProd[2].urlImagen
+document.querySelector("#producto4i").src = listaProd[3].urlImagen
+document.querySelector("#producto5i").src = listaProd[4].urlImagen
+document.querySelector("#producto6i").src = listaProd[5].urlImagen
 
 //INICIALIZANDO VARIABLES GLOBALES
 let numVenta = 0
@@ -39,12 +63,12 @@ let cant4 = document.querySelector("#cantKgAI")
 let cant5 = document.querySelector("#cantKgAl")
 let cant6 = document.querySelector("#cantKgHA")
 
-
+//BOTONES PRIMARIOS
 let boton1 = document.querySelector(".comprar")
 boton1.addEventListener("click", checkcant)
 let boton2 = document.querySelector(".buscarVenta")
-//boton2.addEventListener("click", verVenta)
 
+//HTML SEGUNDO PÄSO
 let subtotal = document.querySelector("#subtotal")
 let newH5 = document.createElement("h5")
 subtotal.appendChild(newH5)
@@ -52,10 +76,12 @@ newH5.textContent = ""
 let formRadio = document.createElement("p")
 subtotal.appendChild(formRadio)
 
+//HTML BUSCADOR DE TICKET
 let divMa = document.querySelector("#ticketEncontrado")
 let h5Ticket = document.createElement("h5")
 divMa.appendChild(h5Ticket)
 
+//BOTONES SECUNDARIOS
 let boton3 = document.querySelector("#confirmar")
 let boton4 = document.querySelector("#cancelar")
 boton3.addEventListener("click", confirmar)

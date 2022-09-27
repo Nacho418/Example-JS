@@ -1,0 +1,43 @@
+[
+    {
+        "id": 1,
+        "producto": "Chapas de hierro finas <br>#24 a #12 (0,55mm a 2,5mm)",
+        "urlImagen": "./prod/chapas hierro.jpg",
+        "precio": 956
+    }
+,
+    {
+        "id": 2,
+        "producto": "Chapas de hierro gruesas <br> #1/8' a #5/16' (3,2mm a 7,9mm)",
+        "urlImagen": "./prod/chapas hierro.jpg",
+        "precio": 841
+    }
+    ,
+    {
+        "id": 3,
+        "producto": "Chapas de hierro galvanizado <br>#27 a #1/8' (0,4mm a 3,2mm)",
+        "urlImagen": "./prod/planchas-galvanizada-500x500.jpg",
+        "precio": 1248
+    }
+    ,
+    {
+        "id": 4,
+        "producto": "Chapas de acero inoxidable esm. cal. 304 <br>0,8mm a 3mm",
+        "urlImagen": "./prod/chapa-aisi304-semimate-000.jpg",
+        "precio": 5128
+    }
+    ,
+    {
+        "id": 5,
+        "producto": "Chapas de aluminio <br>1mm a 4mm",
+        "urlImagen": "./prod/aluminio.jpg",
+        "precio": 3592
+    }
+    ,
+    {
+        "id": 6,
+        "producto": "Chapas de hierro antideslizante <br>1,2mm a 6,3mm",
+        "urlImagen": "./prod/Chapas-antideslizante-2.jpg",
+        "precio": 928
+    }
+]
