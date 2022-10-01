@@ -5,46 +5,28 @@ let day = new Date()
 let hoy = [day.getDate(), day.getMonth(), day.getFullYear()]
 let hoyStr = day.toLocaleDateString()
 document.querySelector(".fecha").textContent = hoyStr
+let productosJSON = []
 
 //GET LISTA DE PRECIOS DESDE JSON API
-let productData
 fetch('prods.json').then((resp) => resp.json()).then((data) => {
-    let dataEnJson = JSON.stringify(data)
-    localStorage.setItem("listaDePrecios", dataEnJson)})
+    data.forEach(producto => {
+        productosJSON.push(producto)
+        let divProducto = document.createElement("div")
+        divProducto.classList.add("col-lg-4")
+        divProducto.classList.add("listaChapas")
+        divProducto.innerHTML = `
+                    
+                        <p id="producto${producto.id}p">${producto.producto}</p>
+                        <img id="producto${producto.id}i" class="foto" src="${producto.urlImagen}" alt="">
+                        <p>$<span id="span${producto.id}">${producto.precio}</span>.- por kilogramo</p>
+                        Cantidad: <input type="number" name="cantKg" id="cantKg${producto.id}" class="inputKg" value=0 min="0">kg
+                    
+        `
+        let divPrinc = document.querySelector("#divPrincipal")
+        divPrinc.appendChild(divProducto)
+    });
+})
 
-//OBTENGO JSON EN VARIABLE GLOBAL
-let listaProd = JSON.parse(localStorage.getItem("listaDePrecios"))
-
-//LISTA DE PRECIOS
-let precio1 = listaProd[0].precio
-let precio2 = listaProd[1].precio
-let precio3 = listaProd[2].precio
-let precio4 = listaProd[3].precio
-let precio5 = listaProd[4].precio
-let precio6 = listaProd[5].precio
-//ASIGNAMIENTO DE PRECIOS
-document.querySelector("#span1").textContent = precio1
-document.querySelector("#span2").textContent = precio2
-document.querySelector("#span3").textContent = precio3
-document.querySelector("#span4").textContent = precio4
-document.querySelector("#span5").textContent = precio5
-document.querySelector("#span6").textContent = precio6
-
-//TEXTO PRODUCTOS
-document.querySelector("#producto1p").innerHTML = listaProd[0].producto
-document.querySelector("#producto2p").innerHTML = listaProd[1].producto
-document.querySelector("#producto3p").innerHTML = listaProd[2].producto
-document.querySelector("#producto4p").innerHTML = listaProd[3].producto
-document.querySelector("#producto5p").innerHTML = listaProd[4].producto
-document.querySelector("#producto6p").innerHTML = listaProd[5].producto
-
-//IMAGENES PRODUCTOS
-document.querySelector("#producto1i").src = listaProd[0].urlImagen
-document.querySelector("#producto2i").src = listaProd[1].urlImagen
-document.querySelector("#producto3i").src = listaProd[2].urlImagen
-document.querySelector("#producto4i").src = listaProd[3].urlImagen
-document.querySelector("#producto5i").src = listaProd[4].urlImagen
-document.querySelector("#producto6i").src = listaProd[5].urlImagen
 
 //INICIALIZANDO VARIABLES GLOBALES
 let numVenta = 0
@@ -55,20 +37,13 @@ let cantProd = 0
 let ventas = [] //ARREGLO CONTENEDOR DE TODAS LAS VENTAS
 let clientes = []
 
-//SELECTORES DE INPUTS CANTIDADES
-let cant1 = document.querySelector("#cantKgHF")
-let cant2 = document.querySelector("#cantKgHG")
-let cant3 = document.querySelector("#cantKgHGal")
-let cant4 = document.querySelector("#cantKgAI")
-let cant5 = document.querySelector("#cantKgAl")
-let cant6 = document.querySelector("#cantKgHA")
 
 //BOTONES PRIMARIOS
 let boton1 = document.querySelector(".comprar")
 boton1.addEventListener("click", checkcant)
 let boton2 = document.querySelector(".buscarVenta")
 
-//HTML SEGUNDO PÄSO
+//HTML SEGUNDO PASO
 let subtotal = document.querySelector("#subtotal")
 let newH5 = document.createElement("h5")
 subtotal.appendChild(newH5)
@@ -90,9 +65,8 @@ boton4.addEventListener("click", cancelar)
 //FUNCION BOTON PRIMARIO "INICIAR COMPRA"
 //FUNCION VALIDAR CANTIDADES INGRESADAS
 function checkcant() {
-    let inputs = []
     cantProd = 0
-    inputs = document.querySelectorAll(".inputKg")
+   let inputs = document.querySelectorAll(".inputKg")
     let errores = 0
     checkCantProd()
     for (let i = 0; i < inputs.length; i++) {
@@ -101,37 +75,34 @@ function checkcant() {
         }
     }
     if (errores == 0 && cantProd > 0) {
-        comprar()
+        comprar(inputs)
         window.scrollTo(0, 10000)
     }
     else {
-        alert("Error en las cantidades \nVuelva a intentar")
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Parece que la cantidad de algún producto es incorrecta',
+        })
     }
 }
 
-function comprar() {
+function comprar(inputs) {
     cuotas = 1
-    cant1 = document.querySelector("#cantKgHF")
-    cant2 = document.querySelector("#cantKgHG")
-    cant3 = document.querySelector("#cantKgHGal")
-    cant4 = document.querySelector("#cantKgAI")
-    cant5 = document.querySelector("#cantKgAl")
-    cant6 = document.querySelector("#cantKgHA")
-    pagoTot = (cant1.value * precio1) + (cant2.value * precio2) + (cant3.value * precio3) + (cant4.value * precio4) + (cant5.value * precio5) + (cant6.value * precio6)
-    pesoTot = parseInt(cant1.value) + parseInt(cant2.value) + parseInt(cant3.value) + parseInt(cant4.value) + parseInt(cant5.value) + parseInt(cant6.value)
+    pagoTot = 0
+    pesoTot = 0
+    for (let i = 0; i < inputs.length; i++) {
+        pagoTot += parseInt(inputs[i].value)*productosJSON[i].precio
+        pesoTot += parseInt(inputs[i].value)
+        inputs[i].setAttribute("disabled", "")
+    }
+    pagoTotal = pagoTot
 
     editH5(cantProd, pesoTot, pagoTot)
 
     document.querySelector("#pie").style.display = "block"
-    cant1.setAttribute("disabled", "")
-    cant2.setAttribute("disabled", "")
-    cant3.setAttribute("disabled", "")
-    cant4.setAttribute("disabled", "")
-    cant5.setAttribute("disabled", "")
-    cant6.setAttribute("disabled", "")
     boton2.setAttribute("disabled", "")
     boton2.setAttribute("style", "opacity:0.7")
-
     formRadio.innerHTML =
         `
 <form>
@@ -163,29 +134,6 @@ function getValue(e) {
     }
     pagoTotal = Math.floor(pagoTotal)
     editH5(cantProd, pesoTot, pagoTotal)
-}
-
-//FUNCION CANCELAR COMPRA
-function cancelar() {
-    newH5.innerHTML = ""
-    document.querySelector("#pie").style.display = "none"
-    cant1.removeAttribute("disabled", "")
-    cant2.removeAttribute("disabled", "")
-    cant3.removeAttribute("disabled", "")
-    cant4.removeAttribute("disabled", "")
-    cant5.removeAttribute("disabled", "")
-    cant6.removeAttribute("disabled", "")
-    boton2.removeAttribute("disabled", "")
-    boton2.removeAttribute("style", "opacity:0.7")
-    Toastify({
-        avatar: "https://img1.freepng.es/20180203/cae/kisspng-scalable-vector-graphics-computer-file-cancel-button-png-photos-5a756d294d0b97.9125681215176450973156.jpg",
-        text: "¡Cancelado!",
-        duration: 4000,
-        style: {
-            background: "linear-gradient(to right, rgb(255, 0, 0), rgb(255, 136, 0))",
-        }
-    }).showToast();
-
 }
 
 function checkCantProd() {
@@ -226,43 +174,58 @@ function confirmar() {
                 '¡Realizado!',
                 `Gracias ${vendido.cliente.nombre} por su compra`,
                 'success'
-            )
-            Toastify({
-                avatar: "https://e7.pngegg.com/pngimages/707/466/png-clipart-check-mark-computer-icons-symbol-check-miscellaneous-angle.png",
-                text: "¡Venta realizada con éxito!",
-                duration: 4000,
-                style: {
-                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                )
+                Toastify({
+                    avatar: "https://e7.pngegg.com/pngimages/707/466/png-clipart-check-mark-computer-icons-symbol-check-miscellaneous-angle.png",
+                    text: "¡Venta realizada con éxito!",
+                    duration: 4000,
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
                 }
             }).showToast();
             reiniciar()
         }
         else {
             cancelar()
-            comprar()
         }
     })
 }
+//FUNCION CANCELAR COMPRA
+function cancelar() {
+    let inputs = document.querySelectorAll(".inputKg")
+    newH5.innerHTML = ""
+    document.querySelector("#pie").style.display = "none"
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].removeAttribute("disabled", "")
+    }
+    cantProd = 0
+    boton2.removeAttribute("disabled", "")
+    boton2.removeAttribute("style", "opacity:0.7")
+    Toastify({
+        avatar: "https://img1.freepng.es/20180203/cae/kisspng-scalable-vector-graphics-computer-file-cancel-button-png-photos-5a756d294d0b97.9125681215176450973156.jpg",
+        text: "¡Cancelado!",
+        duration: 4000,
+        style: {
+            background: "linear-gradient(to right, rgb(255, 0, 0), rgb(255, 136, 0))",
+        }
+    }).showToast();
+   
+
+}
+
 
 //FUNCION RESTABLECER PREDETERMINADO
 function reiniciar() {
-    cant1.value = 0
-    cant2.value = 0
-    cant3.value = 0
-    cant4.value = 0
-    cant5.value = 0
-    cant6.value = 0
+    let inputs = document.querySelectorAll(".inputKg")
     newH5.innerHTML = ""
     document.querySelector("#pie").style.display = "none"
-    cant1.removeAttribute("disabled", "")
-    cant2.removeAttribute("disabled", "")
-    cant3.removeAttribute("disabled", "")
-    cant4.removeAttribute("disabled", "")
-    cant5.removeAttribute("disabled", "")
-    cant6.removeAttribute("disabled", "")
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].value = 0
+        inputs[i].removeAttribute("disabled", "")
+    }
+    cantProd = 0
     boton2.removeAttribute("disabled", "")
     boton2.removeAttribute("style", "opacity:0.7")
-    cantProd = 0
 }
 
 function deleteNum() {

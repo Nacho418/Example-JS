@@ -35,95 +35,64 @@
                     onclick="login(event)">Comenzar</button>
             </div>
         </form>
+
     </center>
     <div id="lista" class="hide">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 listaChapas">
-                    <p id="producto1p"></p>
-                    <img id="producto1i" class="foto" src="" alt="">
-                    <p>$<span id="span1"></span>.- por kilogramo</p>
-                    Cantidad: <input type="number" name="cantKgHF" id="cantKgHF" class="inputKg" value=0 min="0">kg
+            <div class="container">
+                <div id="divPrincipal" class="row">
+
                 </div>
-                <div class="col-lg-4 listaChapas">
-                    <p id="producto2p"></p>
-                    <img id="producto2i" class="foto" src="" alt="">
-                    <p>$<span id="span2"></span>.- por kilogramo</p>
-                    Cantidad: <input type="number" name="cantKgHG" id="cantKgHG" class="inputKg" value=0 min="0">kg
-                </div>
-                <div class="col-lg-4 listaChapas">
-                    <p id="producto3p"></p>
-                    <img id="producto3i" class="foto" src="" alt="">
-                    <p>$<span id="span3"></span>.- por kilogramo</p>
-                    Cantidad: <input type="number" name="cantKgHGal" id="cantKgHGal" class="inputKg" value=0 min="0">kg
-                </div>
-                <div class="col-lg-4 listaChapas">
-                    <p id="producto4p"></p>
-                    <img id="producto4i" class="foto" src="" alt="">
-                    <p>$<span id="span4"></span>.- por kilogramo</p>
-                    Cantidad: <input type="number" name="cantKgAI" id="cantKgAI" class="inputKg" value=0 min="0">kg
-                </div>
-                <div class="col-lg-4 listaChapas">
-                    <p id="producto5p"></p>
-                    <img id="producto5i" class="foto" src="" alt="">
-                    <p>$<span id="span5"></span>.- por kilogramo</p>
-                    Cantidad: <input type="number" name="cantKgAl" id="cantKgAl" class="inputKg" value=0 min="0">kg
-                </div>
-                <div class="col-lg-4 listaChapas">
-                    <p id="producto6p"></p>
-                    <img id="producto6i" class="foto" src="" alt="" value=0>
-                    <p>$<span id="span6"></span>.- por kilogramo</p>
-                    Cantidad: <input type="number" name="cantKgHA" id="cantKgHA" class="inputKg" value=0 min="0">kg
-                </div>
+            </div>
+        
+
+
+<center>
+        <button class="comprar boton" style="margin: 5px 50px;">Iniciar Compra</button>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="buscarVenta boton" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Buscar Venta
+        </button>
+
+        <div id="espacio" class="container"></div>
+        <div id="pie" style="display: none;">
+            <div id="subtotal"></div>
+            <div id="confirm">
+                <button id="confirmar" style="margin: 5px 50px;" class="boton">Confirmar</button><button id="cancelar"
+                    style="margin: 5px 50px;" class="boton">Cancelar</button>
             </div>
         </div>
-        <center>
-            <button class="comprar boton" style="margin: 5px 50px;">Iniciar Compra</button>
 
-            <!-- Button trigger modal -->
-            <button type="button" class="buscarVenta boton" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Buscar Venta
-            </button>
-
-            <div id="espacio" class="container"></div>
-            <div id="pie" style="display: none;">
-                <div id="subtotal"></div>
-                <div id="confirm">
-                    <button id="confirmar" style="margin: 5px 50px;" class="boton">Confirmar</button><button
-                        id="cancelar" style="margin: 5px 50px;" class="boton">Cancelar</button>
-                </div>
-            </div>
-
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Buscador</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                onclick="deleteNum()"></button>
-                        </div>
-                        <div id="divBuscador" class="modal-body">
-                            Ingrese número de venta <input id="inputBuscador" type="number" name="numVentaBuscada">
-                        </div>
-                        <div id="ticketEncontrado"></div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                onclick="deleteNum()">Cancelar</button>
-                            <button id="botonBuscador" type="button" class="btn btn-primary">Buscar</button>
-                        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Buscador</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            onclick="deleteNum()"></button>
+                    </div>
+                    <div id="divBuscador" class="modal-body">
+                        Ingrese número de venta <input id="inputBuscador" type="number" name="numVentaBuscada">
+                    </div>
+                    <div id="ticketEncontrado"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            onclick="deleteNum()">Cancelar</button>
+                        <button id="botonBuscador" type="button" class="btn btn-primary">Buscar</button>
                     </div>
                 </div>
             </div>
-        </center>
+        </div>
     </div>
+</center>
     <script src="./app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.33/dist/sweetalert2.all.min.js" integrity="sha256-uGRHvDtVpBeFd7aKWnNdg7qIo+f+dQPlFRMSTqOq7o8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.33/dist/sweetalert2.all.min.js"
+        integrity="sha256-uGRHvDtVpBeFd7aKWnNdg7qIo+f+dQPlFRMSTqOq7o8=" crossorigin="anonymous"></script>
 </body>
 
 </html>
