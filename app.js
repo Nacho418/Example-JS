@@ -5,9 +5,10 @@ let day = new Date()
 let hoy = [day.getDate(), day.getMonth(), day.getFullYear()]
 let hoyStr = day.toLocaleDateString()
 document.querySelector(".fecha").textContent = hoyStr
-let productosJSON = []
 
-//GET LISTA DE PRECIOS DESDE JSON API
+
+//GET PRODUCTOS DESDE JSON API
+let productosJSON = []
 fetch('prods.json').then((resp) => resp.json()).then((data) => {
     data.forEach(producto => {
         productosJSON.push(producto)
@@ -15,12 +16,10 @@ fetch('prods.json').then((resp) => resp.json()).then((data) => {
         divProducto.classList.add("col-lg-4")
         divProducto.classList.add("listaChapas")
         divProducto.innerHTML = `
-                    
                         <p id="producto${producto.id}p">${producto.producto}</p>
                         <img id="producto${producto.id}i" class="foto" src="${producto.urlImagen}" alt="">
                         <p>$<span id="span${producto.id}">${producto.precio}</span>.- por kilogramo</p>
-                        Cantidad: <input type="number" name="cantKg" id="cantKg${producto.id}" class="inputKg" value=0 min="0">kg
-                    
+                        Cantidad: <input type="number" name="cantKg" id="cantKg${producto.id}" class="inputKg" value=0 min="0">kg         
         `
         let divPrinc = document.querySelector("#divPrincipal")
         divPrinc.appendChild(divProducto)
@@ -36,7 +35,6 @@ let pesoTot = 0
 let cantProd = 0
 let ventas = [] //ARREGLO CONTENEDOR DE TODAS LAS VENTAS
 let clientes = []
-
 
 //BOTONES PRIMARIOS
 let boton1 = document.querySelector(".comprar")
@@ -209,10 +207,7 @@ function cancelar() {
             background: "linear-gradient(to right, rgb(255, 0, 0), rgb(255, 136, 0))",
         }
     }).showToast();
-   
-
 }
-
 
 //FUNCION RESTABLECER PREDETERMINADO
 function reiniciar() {
@@ -281,6 +276,8 @@ class Venta {
         this.cliente = cliente;
     }
 }
+
+//CLASE PARA LOGIN USUARIO/CLIENTE
 class Persona {
     constructor(nombre, apellido, correo) {
         this.nombre = nombre;
@@ -316,7 +313,6 @@ function checkData(data) {
     if (data.nombre == "" || data.apellido == "" || data.correo == "") {
         sessionStorage.removeItem("client")
         alert("Ingrese todos sus datos")
-
     }
     location.reload()
 }
